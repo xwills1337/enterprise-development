@@ -89,5 +89,5 @@
 
 ## Вопросы и обратная связь по курсу
 
-Чтобы задать вопрос по лабораторной, воспользуйтесь [соотвествующим разделом дискуссий](https://github.com/itsecd/enterprise-development/discussions/categories/questions) или заведите [ишью](https://github.com/itsecd/enterprise-development/issues/new).
+Чтобы задать вопрос по лабораторной, воспользуйтесь [соотвествующим разделом дискуссий](https://github.com/itsecd/enterprise-development/discussions/categories/questions) или заведите [ишью](https://github.com/itsecd/enterprise-development/issues/new).  
 Если у вас появились идеи/пожелания/прочие полезные мысли по преподаваемой дисциплине, их можно оставить [здесь](https://github.com/itsecd/enterprise-development/discussions/categories/ideas).
