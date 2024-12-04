@@ -6,27 +6,27 @@
 public class Client
 {
     /// <summary>
-    /// идентификатор клиента
+    /// Идентификатор клиента
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
-    /// фио клиента
+    /// ФИО клиента
     /// </summary>
     public required string FullName { get; set; }
 
     /// <summary>
-    /// паспорт
+    /// Паспорт
     /// </summary>
     public required string Passport { get; set; }
 
     /// <summary>
-    /// номер телефона
+    /// Номер телефона
     /// </summary>
     public required string Phone { get; set; }
 
     /// <summary>
-    /// адрес прописки
+    /// Адрес прописки
     /// </summary>
     public required string Address { get; set; }
 }

@@ -1,43 +1,43 @@
 ﻿namespace RealEstateAgency.Domain;
 
+public enum TransactionType
+{
+    Purchase,
+    Sale
+}
+
 /// <summary>
-/// заявка клиента
+/// Заявка клиента
 /// </summary>
 public class Order
 {
     /// <summary>
-    /// идентификатор заявки
+    /// Идентификатор заявки
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
-    /// время заявки
+    /// Время заявки
     /// </summary>
     public DateTime Time { get; set; }
 
     /// <summary>
-    /// клиент, сделавший заявку
+    /// Клиент, сделавший заявку
     /// </summary>
     public required Client Client { get; set; }
 
-    public enum TransactionType
-    {
-        Purchase,
-        Sale
-    }
-
     /// <summary>
-    /// тип заявки (покупка или продажа)
+    /// Тип заявки (покупка или продажа)
     /// </summary>
     public TransactionType Type { get; set; }
 
     /// <summary>
-    /// цена недвижимости
+    /// Цена недвижимости
     /// </summary>
     public decimal Price { get; set; }
 
     /// <summary>
-    /// объект недвижимости
+    /// Объект недвижимости
     /// </summary>
     public required RealEstate Item { get; set; }
 }

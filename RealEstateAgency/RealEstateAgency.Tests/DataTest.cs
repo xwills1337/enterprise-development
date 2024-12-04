@@ -10,8 +10,8 @@ public static class TestData
 
     static TestData()
     {
-        Clients = new List<Client>
-        {
+        Clients =
+        [
             new Client
             {
                 Id = 1,
@@ -52,90 +52,90 @@ public static class TestData
                 Phone = "+7 800 555 7979",
                 Address = "st. Pokrovka, 9, Moscow",
             }
-        };
+        ];
 
-        RealEstates = new List<RealEstate>
-        {
+        RealEstates =
+        [
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "100 Leningradsky Prospekt, Moscow",
                 Square = 70.5,
                 NumberOfRooms = 2
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Commercial,
+                Type = RealEstateType.Commercial,
                 Address = "300 Tverskaya St, Moscow",
                 Square = 150.0,
                 NumberOfRooms = 4
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "10 Pushkinskaya Sq, Moscow",
                 Square = 80.0,
                 NumberOfRooms = 3
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "15 Garden Ring Rd, Moscow",
                 Square = 60.0,
                 NumberOfRooms = 2
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Commercial,
+                Type = RealEstateType.Commercial,
                 Address = "22 Nevskiy Ave, St. Petersburg",
                 Square = 200.0,
                 NumberOfRooms = 5
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "44 Admiralteysky Prospect, St. Petersburg",
                 Square = 110.0,
                 NumberOfRooms = 3
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "18 Marata St, St. Petersburg",
                 Square = 90.0,
                 NumberOfRooms = 4
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Commercial,
+                Type = RealEstateType.Commercial,
                 Address = "12 Nevsky Prospect, St. Petersburg",
                 Square = 300.0,
                 NumberOfRooms = 6
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "28 Moscow St, Yekaterinburg",
                 Square = 65.0,
                 NumberOfRooms = 2
             },
             new RealEstate
             {
-                Type = RealEstate.RealEstateType.Residential,
+                Type = RealEstateType.Residential,
                 Address = "35 Kirov St, Yekaterinburg",
                 Square = 120.0,
                 NumberOfRooms = 5
             }
-        };
+        ];
 
-        Orders = new List<Order>
-        {
+        Orders =
+        [
             new Order
             {
                 Id = 1,
                 Time = DateTime.Now.AddMonths(-1),
                 Client = Clients[0],
-                Type = Order.TransactionType.Purchase,
+                Type = TransactionType.Purchase,
                 Price = 750000,
                 Item = RealEstates[0]
             },
@@ -144,7 +144,7 @@ public static class TestData
                 Id = 2,
                 Time = DateTime.Now.AddMonths(-2),
                 Client = Clients[0],
-                Type = Order.TransactionType.Sale,
+                Type = TransactionType.Sale,
                 Price = 950000,
                 Item = RealEstates[1]
             },
@@ -153,7 +153,7 @@ public static class TestData
                 Id = 3,
                 Time = DateTime.Now.AddMonths(-3),
                 Client = Clients[1],
-                Type = Order.TransactionType.Purchase,
+                Type = TransactionType.Purchase,
                 Price = 800000,
                 Item = RealEstates[2]
             },
@@ -162,7 +162,7 @@ public static class TestData
                 Id = 4,
                 Time = DateTime.Now.AddMonths(-4),
                 Client = Clients[1],
-                Type = Order.TransactionType.Sale,
+                Type = TransactionType.Sale,
                 Price = 1100000,
                 Item = RealEstates[3]
             },
@@ -171,7 +171,7 @@ public static class TestData
                 Id = 5,
                 Time = DateTime.Now.AddMonths(-5),
                 Client = Clients[2],
-                Type = Order.TransactionType.Purchase,
+                Type = TransactionType.Purchase,
                 Price = 600000,
                 Item = RealEstates[4]
             },
@@ -180,7 +180,7 @@ public static class TestData
                 Id = 6,
                 Time = DateTime.Now.AddMonths(-2),
                 Client = Clients[2],
-                Type = Order.TransactionType.Sale,
+                Type = TransactionType.Sale,
                 Price = 1200000,
                 Item = RealEstates[5]
             },
@@ -189,7 +189,7 @@ public static class TestData
                 Id = 7,
                 Time = DateTime.Now.AddMonths(-3),
                 Client = Clients[3],
-                Type = Order.TransactionType.Purchase,
+                Type = TransactionType.Purchase,
                 Price = 1000000,
                 Item = RealEstates[6]
             },
@@ -198,7 +198,7 @@ public static class TestData
                 Id = 8,
                 Time = DateTime.Now.AddMonths(-1),
                 Client = Clients[3],
-                Type = Order.TransactionType.Sale,
+                Type = TransactionType.Sale,
                 Price = 850000,
                 Item = RealEstates[7]
             },
@@ -207,7 +207,7 @@ public static class TestData
                 Id = 9,
                 Time = DateTime.Now.AddMonths(-6),
                 Client = Clients[4],
-                Type = Order.TransactionType.Purchase,
+                Type = TransactionType.Purchase,
                 Price = 1500000,
                 Item = RealEstates[8]
             },
@@ -216,10 +216,10 @@ public static class TestData
                 Id = 10,
                 Time = DateTime.Now.AddMonths(-4),
                 Client = Clients[4],
-                Type = Order.TransactionType.Sale,
+                Type = TransactionType.Sale,
                 Price = 950000,
                 Item = RealEstates[9]
             }
-        };
+        ];
     }
 }

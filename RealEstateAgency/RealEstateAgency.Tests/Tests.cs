@@ -8,12 +8,12 @@ public class RealEstateAgencyTests
     /// Проверка: Вывести сведения о всех клиентах, ищущих недвижимость заданного типа, упорядочить по ФИО
     /// </summary>
     [Fact]
-    public void GetClientsByRealEstateType_SortedByFullName()
+    public void GetClientsByRealEstateTypeSortedByFullName()
     {
-        var realEstateType = RealEstate.RealEstateType.Commercial;
+        var realEstateType = RealEstateType.Commercial;
 
         var clients = TestData.Clients
-            .Where(c => TestData.Orders.Any(o => o.Client == c && o.Type == Order.TransactionType.Purchase && o.Item.Type == realEstateType))
+            .Where(c => TestData.Orders.Any(o => o.Client == c && o.Type == TransactionType.Purchase && o.Item.Type == realEstateType))
             .OrderBy(c => c.FullName)
             .ToList();
 
@@ -31,7 +31,7 @@ public class RealEstateAgencyTests
         var end = new DateTime(2024, 12, 31);
 
         var sellers = TestData.Clients
-            .Where(c => TestData.Orders.Any(o => o.Client == c && o.Type == Order.TransactionType.Sale && o.Time >= start && o.Time <= end))
+            .Where(c => TestData.Orders.Any(o => o.Client == c && o.Type == TransactionType.Sale && o.Time >= start && o.Time <= end))
             .ToList();
 
         Assert.NotEmpty(sellers);
@@ -48,12 +48,12 @@ public class RealEstateAgencyTests
     [Fact]
     public void GetSellersAndRealEstatesForBuyerRequest()
     {
-        var realEstateType = RealEstate.RealEstateType.Commercial;
+        var realEstateType = RealEstateType.Commercial;
         var maxPrice = 900000;
 
         var sellers = TestData.Clients
             .Join(
-                TestData.Orders.Where(o => o.Type == Order.TransactionType.Sale
+                TestData.Orders.Where(o => o.Type == TransactionType.Sale
                                         && o.Item.Type == realEstateType
                                         && o.Price <= maxPrice),
                 seller => seller.Id,
@@ -84,8 +84,8 @@ public class RealEstateAgencyTests
             })
             .ToList();
 
-        var residentialCount = orderCountByType.FirstOrDefault(t => t.RealEstateType == RealEstate.RealEstateType.Residential);
-        var commercialCount = orderCountByType.FirstOrDefault(t => t.RealEstateType == RealEstate.RealEstateType.Commercial);
+        var residentialCount = orderCountByType.FirstOrDefault(t => t.RealEstateType == RealEstateType.Residential);
+        var commercialCount = orderCountByType.FirstOrDefault(t => t.RealEstateType == RealEstateType.Commercial);
 
         Assert.NotNull(residentialCount);
         Assert.NotNull(commercialCount);
@@ -101,12 +101,12 @@ public class RealEstateAgencyTests
     public void GetTop5ClientsByOrderCount()
     {
         var purchaseOrders = TestData.Clients
-            .OrderByDescending(c => TestData.Orders.Count(o => o.Client == c && o.Type == Order.TransactionType.Purchase))
+            .OrderByDescending(c => TestData.Orders.Count(o => o.Client == c && o.Type == TransactionType.Purchase))
             .Take(5)
             .ToList();
 
         var saleOrders = TestData.Clients
-            .OrderByDescending(c => TestData.Orders.Count(o => o.Client == c && o.Type == Order.TransactionType.Sale))
+            .OrderByDescending(c => TestData.Orders.Count(o => o.Client == c && o.Type == TransactionType.Sale))
             .Take(5)
             .ToList();
 

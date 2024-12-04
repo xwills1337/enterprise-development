@@ -1,38 +1,38 @@
 ﻿namespace RealEstateAgency.Domain;
 
+public enum RealEstateType
+{
+    Residential,
+    Commercial
+}
+
 /// <summary>
-/// объект недвижимости
+/// Объект недвижимости
 /// </summary>
 public class RealEstate
 {
     /// <summary>
-    /// идентификатор объекта
+    /// Идентификатор объекта
     /// </summary>
     public int Id { get; set; }
-    
-    public enum RealEstateType
-    {
-        Residential,
-        Commercial
-    }
 
     /// <summary>
-    /// тип объекта недвижимости (жилое/нежилое)
+    /// Тип объекта недвижимости (жилое/нежилое)
     /// </summary>
     public RealEstateType Type { get; set; }
 
     /// <summary>
-    /// адрес
+    /// Адрес
     /// </summary>
     public required string Address { get; set; }
 
     /// <summary>
-    /// площадь
+    /// Площадь
     /// </summary>
     public double Square { get; set; }
 
     /// <summary>
-    /// количество комнат
+    /// Количество комнат
     /// </summary>
     public int NumberOfRooms { get; set; }
 }
