@@ -1,39 +1,39 @@
 ﻿namespace RealEstateAgency.Domain.Repositories;
 
-public class RealEstateRepository : IRepository<Realestate>
+public class RealEstateRepository : IRepository<RealEstate>
 {
     private readonly List<RealEstate> _realestates = [];
     private int _id = 1;
 
-    public List<Realestate> GetAll() => _realestates;
+    public List<RealEstate> GetAll() => _realestates;
 
-    public Realestate? Get(int id) => _realestates.Find(s => s.Id == id);
+    public RealEstate? Get(int id) => _realestates.Find(s => s.Id == id);
 
-    public void Post(Realestate obj)
+    public void Post(RealEstate obj)
     {
         obj.Id = _id++;
         _realestates.Add(obj);
     }
 
-    public bool Put(Realestate obj, int id)
+    public bool Put(RealEstate obj, int id)
     {
-        var oldRealestate = Get(id);
-        if (oldRealestate == null)
+        var oldRealEstate = Get(id);
+        if (oldRealEstate == null)
             return false;
-        oldRealestate.Id = obj.Id;
-        oldRealestate.Type = obj.Type;
-        oldRealestate.Address = obj.Address;
-        oldRealestate.Square = obj.Square;
-        oldRealestate.NumberOfRooms = obj.NumberOfRooms;
+        oldRealEstate.Id = obj.Id;
+        oldRealEstate.Type = obj.Type;
+        oldRealEstate.Address = obj.Address;
+        oldRealEstate.Square = obj.Square;
+        oldRealEstate.NumberOfRooms = obj.NumberOfRooms;
         return true;
     }
 
     public bool Delete(int id)
     {
-        var deletedRealestate = Get(id);
-        if (deletedRealestate == null)
+        var deletedRealEstate = Get(id);
+        if (deletedRealEstate == null)
             return false;
-        _realestates.Remove(deletedRealestate);
+        _realestates.Remove(deletedRealEstate);
         return true;
     }
 }
