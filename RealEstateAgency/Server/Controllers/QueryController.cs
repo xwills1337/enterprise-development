@@ -8,7 +8,7 @@ namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class QueryController(IRepository<Client> clientRepository, IRepository<RealEstate> realestateRepository, IRepository<Order> orderRepository, IMapper mapper) : ControllerBase
+public class QueryController(IRepository<Client> clientRepository, IRepository<Order> orderRepository, IMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Вывести сведения о всех клиентах, ищущих недвижимость заданного типа, упорядочить по ФИО.
