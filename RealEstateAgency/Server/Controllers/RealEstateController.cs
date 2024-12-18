@@ -15,9 +15,11 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// </summary>
     /// <returns>Список всех объектов недвижимости и http status</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<RealEstate>> Get()
+    public async Task<ActionResult<IEnumerable<RealEstate>>> Get()
     {
-        return Ok(repository.GetAll());
+        var realestates = await repository.GetAll();
+
+        return Ok(realestates);
     }
 
     /// <summary>
@@ -26,9 +28,9 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// <param name="id">Идентификатор объекта недвижимости</param>
     /// <returns>Объект недвижимости и http status</returns>
     [HttpGet("{id}")]
-    public ActionResult<RealEstate> Get(int id)
+    public async Task<ActionResult<RealEstate>> Get(int id)
     {
-        var realEstate = repository.Get(id);
+        var realEstate = await repository.Get(id);
 
         if (realEstate == null)
             return NotFound();
@@ -41,13 +43,13 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// </summary>
     /// <param name="value">Экземпляр, добавляемый в коллекцию</param>
     [HttpPost]
-    public IActionResult Post([FromBody] RealEstateDto value)
+    public async Task<IActionResult> Post([FromBody] RealEstateDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var realEstate = mapper.Map<RealEstate>(value);
-        repository.Post(realEstate);
+        await repository.Post(realEstate);
 
         return Ok();
     }
@@ -58,16 +60,18 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// <param name="id">Идентификатор объекта недвижимости</param>
     /// <param name="value">Экземпляр, заменяющий старый экземпляр в коллекции</param>
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] RealEstateDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] RealEstateDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var existingRealEstate = await repository.Get(id);
+        if (existingRealEstate == null)
+            return NotFound();
+
         var realEstate = mapper.Map<RealEstate>(value);
         realEstate.Id = id;
-
-        if (!repository.Put(realEstate, id))
-            return NotFound();
+        await repository.Put(realEstate, id);
 
         return Ok();
     }
@@ -77,11 +81,13 @@ public class RealEstateController(IRepository<RealEstate> repository, IMapper ma
     /// </summary>
     /// <param name="id">Идентификатор объекта недвижимости</param>
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (!repository.Delete(id))
+        var realEstate = await repository.Get(id);
+        if (realEstate == null)
             return NotFound();
 
+        await repository.Delete(id);
         return Ok();
     }
 }

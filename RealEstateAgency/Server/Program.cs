@@ -1,9 +1,14 @@
 using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("MySql");
+
+builder.Services.AddDbContext<RealEstateAgencyContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
@@ -12,9 +17,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IRepository<Client>, ClientRepository>();
-builder.Services.AddSingleton<IRepository<RealEstate>, RealEstateRepository>();
-builder.Services.AddSingleton<IRepository<Order>, OrderRepository>();
+builder.Services.AddTransient<IRepository<Client>, ClientRepository>();
+builder.Services.AddTransient<IRepository<RealEstate>, RealEstateRepository>();
+builder.Services.AddTransient<IRepository<Order>, OrderRepository>();
 
 builder.Services.AddAutoMapper(typeof(Mapping));
 

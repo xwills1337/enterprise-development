@@ -1,40 +1,41 @@
-﻿namespace RealEstateAgency.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class OrderRepository : IRepository<Order>
+namespace RealEstateAgency.Domain.Repositories;
+
+public class OrderRepository(RealEstateAgencyContext context) : IRepository<Order>
 {
-    private readonly List<Order> _orders = [];
-    private int _id = 1;
+    public async Task<List<Order>> GetAll() => await context.Orders.Include(o => o.Client).Include(o => o.Item).ToListAsync();
 
-    public List<Order> GetAll() => _orders;
+    public async Task<Order?> Get(int id) => await context.Orders.Include(o => o.Client).Include(o => o.Item).FirstOrDefaultAsync(o => o.Id == id);
 
-    public Order? Get(int id) => _orders.Find(s => s.Id == id);
-
-    public void Post(Order obj)
+    public async Task Post(Order obj)
     {
-        obj.Id = _id++;
-        _orders.Add(obj);
+        await context.Orders.AddAsync(obj);
+        await context.SaveChangesAsync();
     }
 
-    public bool Put(Order obj, int id)
+    public async Task Put(Order obj, int id)
     {
-        var oldOrder = Get(id);
+        var oldOrder = await Get(id);
         if (oldOrder == null)
-            return false;
-        oldOrder.Id = obj.Id;
+            return;
+
         oldOrder.Time = obj.Time;
         oldOrder.Client = obj.Client;
         oldOrder.Type = obj.Type;
         oldOrder.Price = obj.Price;
         oldOrder.Item = obj.Item;
-        return true;
+        context.Orders.Update(oldOrder);
+        await context.SaveChangesAsync();
     }
 
-    public bool Delete(int id)
+    public async Task Delete(int id)
     {
-        var deletedOrder = Get(id);
+        var deletedOrder = await Get(id);
         if (deletedOrder == null)
-            return false;
-        _orders.Remove(deletedOrder);
-        return true;
+            return;
+
+        context.Orders.Remove(deletedOrder);
+        await context.SaveChangesAsync();
     }
 }

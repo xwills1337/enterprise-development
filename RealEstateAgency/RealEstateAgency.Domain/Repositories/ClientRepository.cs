@@ -1,39 +1,40 @@
-﻿namespace RealEstateAgency.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class ClientRepository : IRepository<Client>
+namespace RealEstateAgency.Domain.Repositories;
+
+public class ClientRepository(RealEstateAgencyContext context) : IRepository<Client>
 {
-    private readonly List<Client> _clients = [];
-    private int _id = 1;
+    public async Task<List<Client>> GetAll() => await context.Clients.ToListAsync();
 
-    public List<Client> GetAll() => _clients;
+    public async Task<Client?> Get(int id) => await context.Clients.FirstOrDefaultAsync(c => c.Id == id);
 
-    public Client? Get(int id) => _clients.Find(s => s.Id == id);
-
-    public void Post(Client obj)
+    public async Task Post(Client obj)
     {
-        obj.Id = _id++;
-        _clients.Add(obj);
+        await context.Clients.AddAsync(obj);
+        await context.SaveChangesAsync();
     }
 
-    public bool Put(Client obj, int id)
+    public async Task Put(Client obj, int id)
     {
-        var oldClient = Get(id);
+        var oldClient = await Get(id);
         if (oldClient == null)
-            return false;
-        oldClient.Id = obj.Id;
+            return;
+
         oldClient.FullName = obj.FullName;
         oldClient.Passport = obj.Passport;
         oldClient.Phone = obj.Phone;
         oldClient.Address = obj.Address;
-        return true;
+        context.Clients.Update(oldClient);
+        await context.SaveChangesAsync();
     }
 
-    public bool Delete(int id)
+    public async Task Delete(int id)
     {
-        var deletedClient = Get(id);
+        var deletedClient = await Get(id);
         if (deletedClient == null)
-            return false;
-        _clients.Remove(deletedClient);
-        return true;
+            return;
+
+        context.Clients.Remove(deletedClient);
+        await context.SaveChangesAsync();
     }
 }

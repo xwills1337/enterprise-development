@@ -3,21 +3,29 @@ using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Server.DTO;
+using System.Diagnostics;
 
 namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrderController(IRepository<Order> repository, IMapper mapper) : ControllerBase
+public class OrderController(
+    IRepository<Order> repository, 
+    IRepository<Client> clientRepository,
+    IRepository<RealEstate> realestateRepository, 
+    IMapper mapper
+    ) : ControllerBase
 {
     /// <summary>
     /// Возвращает список всех заявок
     /// </summary>
     /// <returns>Список всех заявок и http status</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<Order>> Get()
+    public async Task<ActionResult<IEnumerable<Order>>> Get()
     {
-        return Ok(repository.GetAll());
+        var orders = await repository.GetAll();
+
+        return Ok(orders);
     }
 
     /// <summary>
@@ -26,9 +34,9 @@ public class OrderController(IRepository<Order> repository, IMapper mapper) : Co
     /// <param name="id">Идентификатор заявки</param>
     /// <returns>Заявка и http status</returns>
     [HttpGet("{id}")]
-    public ActionResult<Order> Get(int id)
+    public async Task<ActionResult<Order>> Get(int id)
     {
-        var order = repository.Get(id);
+        var order = await repository.Get(id);
 
         if (order == null)
             return NotFound();
@@ -41,13 +49,23 @@ public class OrderController(IRepository<Order> repository, IMapper mapper) : Co
     /// </summary>
     /// <param name="value">Экземпляр, добавляемый в коллекцию</param>
     [HttpPost]
-    public IActionResult Post([FromBody] OrderDto value)
+    public async Task<IActionResult> Post([FromBody] OrderDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var order = mapper.Map<Order>(value);
-        repository.Post(order);
+        var client = await clientRepository.Get(value.ClientId);
+        if (client == null)
+            return NotFound();
+
+        var realEstate = await realestateRepository.Get(value.RealEstateId);
+        if (realEstate == null)
+            return NotFound();
+
+        order.Client = client;
+        order.Item = realEstate;
+        await repository.Post(order);
 
         return Ok();
     }
@@ -58,16 +76,28 @@ public class OrderController(IRepository<Order> repository, IMapper mapper) : Co
     /// <param name="id">Идентификатор заявки</param>
     /// <param name="value">Экземпляр, заменяющий старый экземпляр в коллекции</param>
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] OrderDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] OrderDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var existingOrder = await repository.Get(id);
+        if (existingOrder == null)
+            return NotFound();
+
         var order = mapper.Map<Order>(value);
         order.Id = id;
-
-        if (!repository.Put(order, id))
+        var client = await clientRepository.Get(value.ClientId);
+        if (client == null)
             return NotFound();
+
+        var realEstate = await realestateRepository.Get(value.RealEstateId);
+        if (realEstate == null)
+            return NotFound();
+
+        order.Client = client;
+        order.Item = realEstate;
+        await repository.Put(order, id);
 
         return Ok();
     }
@@ -77,10 +107,13 @@ public class OrderController(IRepository<Order> repository, IMapper mapper) : Co
     /// </summary>
     /// <param name="id">Идентификатор заявки</param>
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (!repository.Delete(id))
+        var order = await repository.Get(id);
+        if (order == null)
             return NotFound();
+
+        await repository.Delete(id);
 
         return Ok();
     }

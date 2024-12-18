@@ -1,39 +1,40 @@
-﻿namespace RealEstateAgency.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class RealEstateRepository : IRepository<RealEstate>
+namespace RealEstateAgency.Domain.Repositories;
+
+public class RealEstateRepository(RealEstateAgencyContext context) : IRepository<RealEstate>
 {
-    private readonly List<RealEstate> _realestates = [];
-    private int _id = 1;
+    public async Task<List<RealEstate>> GetAll() => await context.RealEstates.ToListAsync();
 
-    public List<RealEstate> GetAll() => _realestates;
+    public async Task<RealEstate?> Get(int id) => await context.RealEstates.FirstOrDefaultAsync(r => r.Id == id);
 
-    public RealEstate? Get(int id) => _realestates.Find(s => s.Id == id);
-
-    public void Post(RealEstate obj)
+    public async Task Post(RealEstate obj)
     {
-        obj.Id = _id++;
-        _realestates.Add(obj);
+        await context.RealEstates.AddAsync(obj);
+        await context.SaveChangesAsync();
     }
 
-    public bool Put(RealEstate obj, int id)
+    public async Task Put(RealEstate obj, int id)
     {
-        var oldRealEstate = Get(id);
+        var oldRealEstate = await Get(id);
         if (oldRealEstate == null)
-            return false;
-        oldRealEstate.Id = obj.Id;
+            return;
+
         oldRealEstate.Type = obj.Type;
         oldRealEstate.Address = obj.Address;
         oldRealEstate.Square = obj.Square;
         oldRealEstate.NumberOfRooms = obj.NumberOfRooms;
-        return true;
+        context.RealEstates.Update(oldRealEstate);
+        await context.SaveChangesAsync();
     }
 
-    public bool Delete(int id)
+    public async Task Delete(int id)
     {
-        var deletedRealEstate = Get(id);
+        var deletedRealEstate = await Get(id);
         if (deletedRealEstate == null)
-            return false;
-        _realestates.Remove(deletedRealEstate);
-        return true;
+            return;
+
+        context.RealEstates.Remove(deletedRealEstate);
+        await context.SaveChangesAsync();
     }
 }

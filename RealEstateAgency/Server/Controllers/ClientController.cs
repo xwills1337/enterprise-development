@@ -15,9 +15,10 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     /// </summary>
     /// <returns>—писок всех клиентов и http status</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<Client>> Get()
+    public async Task<ActionResult<IEnumerable<Client>>> Get()
     {
-        return Ok(repository.GetAll());
+        var clients = await repository.GetAll();
+        return Ok(clients);
     }
 
     /// <summary>
@@ -26,10 +27,9 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     /// <param name="id">»дентификатор клиента</param>
     /// <returns> лиент и http status</returns>
     [HttpGet("{id}")]
-    public ActionResult<Client> Get(int id)
+    public async Task<ActionResult<Client>> Get(int id)
     {
-        var client = repository.Get(id);
-
+        var client = await repository.Get(id);
         if (client == null)
             return NotFound();
 
@@ -41,13 +41,13 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     /// </summary>
     /// <param name="value">Ёкземпл€р, добавл€емый в коллекцию</param>
     [HttpPost]
-    public IActionResult Post([FromBody] ClientDto value)
+    public async Task<IActionResult> Post([FromBody] ClientDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var client = mapper.Map<Client>(value);
-        repository.Post(client);
+        await repository.Post(client);
 
         return Ok();
     }
@@ -58,16 +58,18 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     /// <param name="id">»дентификатор клиента</param>
     /// <param name="value">Ёкземпл€р, замен€ющий старый экземпл€р в коллекции</param>
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] ClientDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] ClientDto value)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var existingClient = await repository.Get(id);
+        if (existingClient == null)
+            return NotFound();
+
         var client = mapper.Map<Client>(value);
         client.Id = id;
-
-        if (!repository.Put(client, id))
-            return NotFound();
+        await repository.Put(client, id);
 
         return Ok();
     }
@@ -77,11 +79,13 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     /// </summary>
     /// <param name="id">»дентификатор клиента</param>
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (!repository.Delete(id))
+        var client = await repository.Get(id);
+        if (client == null)
             return NotFound();
 
+        await repository.Delete(id);
         return Ok();
     }
 }
