@@ -3,7 +3,6 @@ using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Server.DTO;
-using System.Diagnostics;
 
 namespace Server.Controllers;
 
