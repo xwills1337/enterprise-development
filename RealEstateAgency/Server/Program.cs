@@ -10,6 +10,22 @@ var connectionString = builder.Configuration.GetConnectionString("MySql");
 builder.Services.AddDbContext<RealEstateAgencyContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        var clientAddresses = builder.Configuration.GetSection("ClientAddresses").Get<Dictionary<string, string>>();
+        if (clientAddresses == null || !clientAddresses.Any())
+        {
+            throw new Exception("'ClientAddresses' is not found in appsettings.json.");
+        }
+        policy.WithOrigins(clientAddresses.Values.ToArray())
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
@@ -32,5 +48,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
+app.UseCors("AllowReactApp");
 
 app.Run();
