@@ -1,4 +1,4 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using RealEstateAgency.Domain;
 using RealEstateAgency.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,9 @@ namespace Server.Controllers;
 public class ClientController(IRepository<Client> repository, IMapper mapper) : ControllerBase
 {
     /// <summary>
-    /// Возвращает список всех клиентов
+    /// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІСЃРµС… РєР»РёРµРЅС‚РѕРІ
     /// </summary>
-    /// <returns>Список всех клиентов и http status</returns>
+    /// <returns>РЎРїРёСЃРѕРє РІСЃРµС… РєР»РёРµРЅС‚РѕРІ Рё http status</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Client>>> Get()
     {
@@ -22,10 +22,10 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     }
 
     /// <summary>
-    /// Возвращает клиента по указанному идентификатору
+    /// Р’РѕР·РІСЂР°С‰Р°РµС‚ РєР»РёРµРЅС‚Р° РїРѕ СѓРєР°Р·Р°РЅРЅРѕРјСѓ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
     /// </summary>
-    /// <param name="id">Идентификатор клиента</param>
-    /// <returns>Клиент и http status</returns>
+    /// <param name="id">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєР»РёРµРЅС‚Р°</param>
+    /// <returns>РљР»РёРµРЅС‚ Рё http status</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<Client>> Get(int id)
     {
@@ -37,9 +37,9 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     }
 
     /// <summary>
-    /// Добавляет клиента с указанным идентификатором в коллекцию
+    /// Р”РѕР±Р°РІР»СЏРµС‚ РєР»РёРµРЅС‚Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РІ РєРѕР»Р»РµРєС†РёСЋ
     /// </summary>
-    /// <param name="value">Экземпляр, добавляемый в коллекцию</param>
+    /// <param name="value">Р­РєР·РµРјРїР»СЏСЂ, РґРѕР±Р°РІР»СЏРµРјС‹Р№ РІ РєРѕР»Р»РµРєС†РёСЋ</param>
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ClientDto value)
     {
@@ -53,10 +53,10 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     }
 
     /// <summary>
-    /// Заменяет клиента с указанным идентификатором в коллекции
+    /// Р—Р°РјРµРЅСЏРµС‚ РєР»РёРµРЅС‚Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РІ РєРѕР»Р»РµРєС†РёРё
     /// </summary>
-    /// <param name="id">Идентификатор клиента</param>
-    /// <param name="value">Экземпляр, заменяющий старый экземпляр в коллекции</param>
+    /// <param name="id">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєР»РёРµРЅС‚Р°</param>
+    /// <param name="value">Р­РєР·РµРјРїР»СЏСЂ, Р·Р°РјРµРЅСЏСЋС‰РёР№ СЃС‚Р°СЂС‹Р№ СЌРєР·РµРјРїР»СЏСЂ РІ РєРѕР»Р»РµРєС†РёРё</param>
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] ClientDto value)
     {
@@ -75,9 +75,9 @@ public class ClientController(IRepository<Client> repository, IMapper mapper) : 
     }
 
     /// <summary>
-    /// Удаляет клиента с указанным идентификатором из коллекции
+    /// РЈРґР°Р»СЏРµС‚ РєР»РёРµРЅС‚Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј РёР· РєРѕР»Р»РµРєС†РёРё
     /// </summary>
-    /// <param name="id">Идентификатор клиента</param>
+    /// <param name="id">РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєР»РёРµРЅС‚Р°</param>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
